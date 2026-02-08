@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Hello - routing{% endblock %}
+
+{% block content %}
+<ul>
+{% for b in books %}
+    <li>{{ b.title }} — {{ b.author }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

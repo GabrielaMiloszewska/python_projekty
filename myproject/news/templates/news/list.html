@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>List of News</h1>
+
+    {% for n in news %}
+        <p><a href="{% url 'news:details' n.id %}">{{ n.title }}</a></p>
+    {% empty %}
+        <p>No news available.</p>
+    {% endfor %}
+
+{% endblock %}

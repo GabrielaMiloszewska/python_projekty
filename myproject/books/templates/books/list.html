@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Lista książek{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% for book in page_obj %}
+
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p><strong>Autor:</strong> {{ book.author }}</p>
+                <p><strong>Rok:</strong> {{ book.year }}</p>
+                <p><strong>Cena:</strong> {{ book.price }} zł</p>
+                <p class="card-text">{{ book.snippet }}</p>
+                <a href="{% url 'books:details' book.id %}" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Szczegóły wybranej książki{% endblock %}
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+<p><strong>Autor:</strong> {{ book.author }}</p>
+<p><strong>Rok wydania:</strong> {{ book.year }}</p>
+<p><strong>Cena:</strong> {{ book.price }} zł</p>
+<hr>
+<p>{{ book.description }}</p>
+{% endblock %}
