@@ -1,0 +1,4 @@
+2026-02-21 12:36:40,462 | INFO news.views 9812 17260 - Loguje wywo³anie widoku news_list
+2026-02-21 14:52:18,509 | INFO news.views 14328 10592 - Loguje wywo³anie widoku news_list
+2026-02-21 14:52:22,081 | INFO news.views 14328 10592 - Loguje wywo³anie widoku news_list
+2026-02-21 16:17:13,448 | INFO news.views 19600 8560 - Loguje wywo³anie widoku news_list

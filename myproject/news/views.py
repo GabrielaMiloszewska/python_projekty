@@ -3,10 +3,13 @@ from django.shortcuts import render
 from django.contrib import messages
 from .services import service
 from .forms import AuthorForm, NewsForm
+import logging
 
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 def news_list(request):
+    logger.info('Loguje wywołanie widoku news_list')
     return render(request, 'news/list.html', {'news': service.get_news()})
 
 

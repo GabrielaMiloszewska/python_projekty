@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -61,6 +62,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts.middleware.DebugRequestLogMiddleware',
+    'accounts.middleware.RequestTimingMiddleware'
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -75,6 +78,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'news.context_processors.my_context',
+                'news.context_processors.global_metrics',
+                'blog.contextprocessors.posts_count',
             ],
         },
     },
@@ -135,3 +141,52 @@ LOGOUT_REDIRECT_URL = '/'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+NEWS_LOG_DIR = BASE_DIR / "logs" / "news"
+BLOG_LOG_DIR = BASE_DIR / "logs" / "blog"
+NEWS_LOG_DIR.mkdir(parents=True, exist_ok=True)
+BLOG_LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            # "format": "%(levelname)s %(message)s",
+            # "style": "%"
+            "format": "{asctime} | {levelname} {name} - {message}",
+            "style": "{"
+        },
+        "verbose": {
+            "format": "{asctime} | {levelname} {name} {process:d} {thread:d} - {message}",
+            "style": "{"
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "news_file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": str(NEWS_LOG_DIR / "log.log"),
+            "maxBytes": 1024 * 1024 * 5,
+            "backupCount": 5,
+            "formatter": "verbose",
+        },
+        "blog_file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": str(BLOG_LOG_DIR / "log.log"),
+            "maxBytes": 1024 * 1024 * 5,
+            "backupCount": 5,
+            "formatter": "verbose",
+        }
+    },
+    "loggers": {
+        "django": {"handlers": ["console"], "propagate": True, "level": "INFO"},
+        "news.views": {"handlers": ["news_file"], "level": "DEBUG", "propagate": False},
+        "blog": {"handlers": ["blog_file"], "level": "DEBUG", "propagate": False},
+    },
+
+    "root": {"handlers": ["console"], "level": "INFO"},
+}

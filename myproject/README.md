@@ -239,3 +239,42 @@ poszukaj autora po tagu
 ## utworz sciezke, widok do tworzenia autora
 
 /news/authors/add - chcemy tu miec formularz do dodana autora. 
+
+
+## Zadanie middleware:
+
+Utworz middleware, ktory mierzy i wypisuje czas wykonana reuest/response w logu
+opcjonalnie dodaj tez taki header do response
+
+
+## Context processors:
+
+dodaj context processor z metrykami:
+ilosc_autorow
+ilosc_newsow
+ilosc postow
+
+
+uzyj go w szablonie base w stopce
+
+## W aplikacji Blog przechodzimy na modele Django.
+
+utworz modele odpowiadajace temu co mielismy wczesniej ale w Django.
+utworz fabryke
+stworz 500 postow
+popraw context processor
+zarejestruj w panelu admina
+i sprawdz czy dziala - lista postow, szczegoly posta.
+
+Stronicowanie powinno dzialac itd?
+
+
+## Dopisz test do blog models - dla metody get_snippet()
+Sprawdz przy pomocy coverage pokrycie testami i dopisz brakujace testy w odpowiednich aplikacjach
+
+pip install pytest pytest-cov pytest-django
+pytest --cov 
+coverage report html
+
+uruchmianie testów: pytest
+i coverage: pytest --cov=blog

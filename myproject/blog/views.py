@@ -1,18 +1,31 @@
 from django.shortcuts import render
-from .models import blog
-from django.core.paginator import Paginator
+from django.views.generic import ListView, DetailView
+from .models import Post
+from .services import blog
 
-# Create your views here.
-def post_list(request):
+import logging
 
-    paginator = Paginator(blog.posts, 9)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, "blog/list.html", {"page_obj": page_obj})
+logger = logging.getLogger(__name__)
 
 
-def post_details(request, id):
-    post = blog.get_post(id)
+class PostListView(ListView):
+    model = Post
+    template_name = "blog/list.html"
+    paginate_by = 9
 
-    return render(request, "blog/details.html", {"post": post})
+    def get_queryset(self):
+        return Post.objects.order_by("-id")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        logger.info(
+            f"Pobieram stronę: {self.request.GET.get('page')} "
+            f"z {context['paginator'].num_pages}"
+        )
+        return context
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/details.html"
+    pk_url_kwarg = "id"
+    context_object_name = "post" # to chyba zbędne
